@@ -24,6 +24,6 @@ const testData = [
   ["C", 100],
   ["CXL", 140],
 ]
-test.each(testData)('myFunc work correctly for %s', (input, output) => {
+test.each(testData)('test roman %s', (input, output) => {
   expect(romanToInt(input)).toBe(output)
 })

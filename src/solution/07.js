@@ -1,33 +1,48 @@
-let observer = new MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-    if (!mutation.addedNodes) return
 
-    for (let i = 0; i < mutation.addedNodes.length; i++) {
-      // do things to your newly added nodes here
-      let node = mutation.addedNodes[i]
-    }
-  })
-})
-
-observer.observe(document.body, {
-  childList: true
-  , subtree: true
-  , attributes: false
-  , characterData: false
-})
-
-// stop watching using:
-observer.disconnect()
-
-
-const ; box = {
-  cube: function (x) {
-
+const solutions = {
+  "cube": `function (x) {
     return Math.pow(x, 3)
+  }`,
+  "ticTacToeWinner": `function (x) {
+  const PLAYER_ONE_SYMBOL = "x"
+  const PLAYER_TWO_SYMBOL = "o"
+  const DRAW_SYMBOL = "draw"
+  const ERROR_MESSAGE = "error"
+  const checkForWinningRow = (value, arrDouble) => {
+    return arrDouble.some((arr) => arr.every(el => el === value))
+  }
 
-  },
-  missingInteger: function (x) {
+  const reverseCollumnToRow = (arrDouble) => {
+    console.log(arrDouble, "this is")
+    return arrDouble.reduce((acc, curr, index, arr) => {
+      const collumn = arr.map(el => el[index])
+      return [...acc, collumn]
+    }, [])
+  }
+  const getDiagonales = (arrDouble) => {
+    return arrDouble.reduce((acc, curr, index, arr) => {
+      const [diagAsc = [], diagDesc = []] = acc
+      const inversedIndex = arr.length - 1 - index
+      return [[...diagAsc, arr[index][index]], [...diagDesc, arr[index][inversedIndex]]]
+    }, [])
+  }
 
+  const isPlayerOneWins = checkForWinningRow(PLAYER_ONE_SYMBOL, x)
+    || checkForWinningRow(PLAYER_ONE_SYMBOL, reverseCollumnToRow(x))
+    || checkForWinningRow(PLAYER_ONE_SYMBOL, getDiagonales(x))
+  const isPlayerTwoWins = checkForWinningRow(PLAYER_TWO_SYMBOL, x)
+    || checkForWinningRow(PLAYER_TWO_SYMBOL, reverseCollumnToRow(x))
+    || checkForWinningRow(PLAYER_TWO_SYMBOL, getDiagonales(x))
+
+  if (isPlayerOneWins && isPlayerTwoWins) {
+    return ERROR_MESSAGE
+  } else if (isPlayerOneWins) { return PLAYER_ONE_SYMBOL }
+  else if (isPlayerTwoWins) { return PLAYER_TWO_SYMBOL }
+  else {
+    return DRAW_SYMBOL
+  }
+}`,
+  "missingInteger": `function (x) {
     if (x.length === 0) return 1
     x.sort((a, b) => a - b)
     const index = x.findIndex((el) => !x.some(secondEl => {
@@ -35,25 +50,19 @@ const ; box = {
       return secondEl === el + 1
     }))
     return x[index] + 1
-  },
+  }`,
 
-  getType(x) {
-    // x is a variable of a random type
-    // return the data type of x
-    // (ex. x="hello" should return "string")
+  "getType": `function(x) {
     return typeof x
-  },
-  sortArrayDesc: function (x) {
+  }`,
+  "sortArrayDesc": `function (x) {
     return x.sort((a, b) => b > a ? 1 : -1)
-  },
-  removeAllSpaces: function (x) {
-    // x is a string
-    // return a string
-    // (ex. x="   Test   String! ", you should return "TestString!")
-    return x.replace(/\s+/g, '')
-  },
+  }`,
+  "removeAllSpaces": `function (x) {
+     return x.split(" ").join('')
+  }`,
 
-  reverseCase: function (x) {
+  "reverseCase": `function (x) {
 
     const UPPER_ALPHA_ASCII_LIMIT = { min: 65, max: 90 }
     const LOW_ALPHA_ASCII_LIMIT = { min: 97, max: 122 }
@@ -71,69 +80,55 @@ const ; box = {
       }
     }, "")
 
-  },
-  reverseAllWords: function (x) {
+  }`,
+  "reverseAllWords": `function (x) {
     // x is a string
     // return a string
     // (ex. x="Hello from Toptal", you should return "olleH morf latpoT")
 
     return x.split('').reverse().join('').split(' ').reverse().join(" ")
 
-  },
+  }`,
 
 
-  multiplierCount: function (x, y) {
+  "multiplierCount": `function (x, y) {
     return [...Array(x)].reduce((acc, _, index) => {
       console.log(acc, index)
       return (index + 1) * y <= x ? acc + 1 : acc
     }, 0)
 
-  },
-  squareRoot: function (x) {
-
+  }`,
+  "squareRoot": `function (x) {
     return Math.sqrt(x)
-
-  },
-
-  removeAllSpaces: function (x) {
-
-    return x.split(' ').join('')
-
-  },
-  replaceSpaces: function (x) {
+  }`,
+  "replaceSpaces": `function (x) {
     // x is a string
     // return a string
     // (ex. x="hello world", you should return "hello%20world")
     return encodeURI(x)
 
-  },
-  numberOfCircles: function (x) {
+  }`,
+  "numberOfCircles": `function (x) {
     x = Math.abs(x)
     const circles = [1, 0, 0, 0, 0, 0, 1, 0, 2, 1]
     return x.toString().split('').map(n => circles[parseInt(n)]).reduce((a, b) => a + b)
-  },
-  findWord: function (word, sentence) {
+  }`,
+  "findWord": `function (word, sentence) {
     // Given word and sentence as two strings,
     // Return the start and end indices of the word in the sentence as an array
     // (ex. word="morning" sentence="Good morning coders!" should return [5,11])
     const index = sentence.toLowerCase().search(word.toLowerCase())
     return index > -1 ? [index, index + word.length - 1] : []
-  },
-  arrayToObject: function (x) {
-
+  }`,
+  "arrayToObject": `function (x) {
     return x.length > 0 ? x.reduce((acc, [key, value]) => !!key ? ({ ...acc, [key]: value }) : acc, {}) : x
-  },
+  }`,
 
-  binaryToNumber: function (x) {
-    // x is a binary number.
-    // return a number
-    // (ex. x=1001, you should return 9)
+  "binaryToNumber": `function (x) {
     return parseInt(x, 2);
 
-  },
-
-
-  findAverage: function (x) {
+  }`,
+  "findAverage": `function (x) {
     return Math.ceil(
       x.reduce(
         (acc, curr, index, arr) =>
@@ -142,30 +137,30 @@ const ; box = {
       )
     )
 
-  },
+  }`,
 
-  matchingType: function (x, y) {
+  "matchingType": `function (x, y) {
 
 
     return typeof x === typeof y
 
-  },
+  }`,
 
-  reverseString: function (x) {
+  "reverseString": `function (x) {
 
     return x.split('').reverse().join('')
 
-  },
+  }`,
 
-  countUniqueNumbers: function (x) {
+  "countUniqueNumbers": `function (x) {
 
 
     return [...new Set(x)].length
 
 
-  },
+  }`,
 
-  numberRepresentation: function (arr) {
+  "numberRepresentation": `function (arr) {
 
 
     const arrUniqueEl = [...new Set(arr)].sort()
@@ -175,49 +170,44 @@ const ; box = {
     return parseInt(stringValue) || 0
 
 
-  },
+  }`,
 
-  charCountInString: function (x, y) {
+  "charCountInString": `function (x, y) {
 
 
     return y.split('').filter((char) => char === x).length
 
 
-  },
-  findUniqueNumber: function (x) {
+  }`,
+  "findUniqueNumber": `function (x) {
     return x.reduce((acc, curr, index, arr) => {
       const isDuplicated = [...arr.slice(0, index), ...arr.slice(index + 1)].some(el => el === curr)
       return !isDuplicated ? [...acc, curr] : acc
     }, [])[0]
-  },
+  }`,
 
-  getHalfArray: function (x) {
-    // x is an array
-    // return an array
-    // (ex. [1,2,1,3,4] should return [1,2,1])
+  "getHalfArray": `function (x) {
     const limit = Math.ceil(x.length / 2)
     return x.slice(0, limit)
-  }
+  }`
   ,
-  removeDuplicates: function (x) {
-    // x is a string
-    // return a string
-    // (ex. x="hello world", you should return "helo wrd")
+  "removeDuplicates": `function (x) {
+
     return [...new Set(x.split(''))].join('')
 
-  },
+  }`,
 
-  monthToString: function (x) {
+  "monthToString": `function (x) {
     // x is a number
     // return a string
     // (ex. x=1, you should return "Jan")
     const FIX_YEAR = 2000
     const date = new Date(FIX_YEAR, x - 1)
     return date.toLocaleString('default', { month: 'short' })
-  },
+  }`,
 
 
-  twoArrayAvg: function (x, y) {
+  "twoArrayAvg": `function (x, y) {
 
 
     const avgFn = (arr) =>
@@ -228,9 +218,9 @@ const ; box = {
     return (avgFn(x) + avgFn(y)) / 2
 
 
-  },
+  }`,
 
-  firstUniqueChar: function (x) {
+  "firstUniqueChar": `function (x) {
 
 
     return x
@@ -243,9 +233,9 @@ const ; box = {
       .join('') || false
 
 
-  },
+  }`,
 
-  digitOccurrence: function (n, x) {
+  "digitOccurrence": `function (n, x) {
     return [...Array(n + 1)].reduce((acc, _, index) => {
       index.toString().split('').forEach(el => {
         if (el === x.toString()) {
@@ -255,9 +245,9 @@ const ; box = {
       return acc
     }, 0)
 
-  },
+  }`,
 
-  isRotatedStr: function (x, y) {
+  "isRotatedStr": `function (x, y) {
 
     if (x === y) { return true }
     else if (!(x.length === y.length)) { return false }
@@ -266,16 +256,16 @@ const ; box = {
       return newWord === y
     })
 
-  },
+  }`,
 
-  hexToRGB: function (x) {
+  "hexToRGB": `function (x) {
 
     const [_, r1, r2, g1, g2, b1, b2] = x.split('')
     return [parseInt(r1 + r2, 16), parseInt(g1 + g2, 16), parseInt(b1 + b2, 16)]
 
-  },
+  }`,
 
-  averageAsciiChar: function (x) {
+  "averageAsciiChar": `function (x) {
 
     const code = x.split('').reduce((acc, curr, index, arr) => {
       acc = acc + curr.charCodeAt(0)
@@ -283,9 +273,9 @@ const ; box = {
     }, 0)
     return String.fromCharCode(Math.round(code))
 
-  },
+  }`,
 
-  hashPassword: function (password, x) {
+  "hashPassword": `function (password, x) {
     const NUM_ASCII_LIMIT = { min: 48, max: 57 }
     const UPPER_ALPHA_ASCII_LIMIT = { min: 65, max: 90 }
     const LOW_ALPHA_ASCII_LIMIT = { min: 97, max: 122 }
@@ -317,18 +307,22 @@ const ; box = {
         }
       })
       .join('')
-  },
+  }`,
 
-  validateIP: function (x) {
+  "validateIP": `function (x) {
     const isNumeric = (val) => {
-      return /^-?\d+$/.test(val);
+          const regex = new RegExp("^[0-9]+$");
+    return regex.test(val);
     }
     const arr = x.split('.')
     return arr.length === 4 && arr.every(el => isNumeric(el) && parseInt(el) < 256)
 
-  },
+  }`,
+  'isAnagram': ` function (x, y) {
+    return x.split('').sort().join('') === y.split('').sort().join('')
+}`,
 
-  isPrime: function (x) {
+  "isPrime": `function (x) {
     if (x < 1) return false
     const arr = [...Array(x)]
     return !arr.some((_, index) => {
@@ -336,9 +330,9 @@ const ; box = {
       return value < x && value > 1 && (x % value) === 0
     })
 
-  },
+  }`,
 
-  romanToInt: function (x) {
+  "romanToInt": `function (x) {
 
     const romanHash = [
       { key: 'I', value: 1 },
@@ -373,9 +367,9 @@ const ; box = {
       }
     }, 0)
 
-  },
-
-  isPalindrome: function (x) {
+  }
+`,
+  "isPalindrome": ` function (x) {
     // x is a string
     // return boolean
     // (ex. x="Pull up!", you should return true)
@@ -383,12 +377,57 @@ const ; box = {
     const chars = x.toLowerCase().match(/[a-zA-Z]+/g).join("")
     return chars.split("").reverse().join("") === chars
   }
-
+`
 }
 
-//command+option+shift+enter
-//find body
-console.log
-// find text-box
 
-//find button
+const myXpath =
+  '//*[@id="page_react_container"]/div/div[5]/div[2]/div/button'
+
+function getElementByXpath(path) {
+  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+}
+
+
+const get_submit_button = () => getElementByXpath(myXpath);
+
+const solve = () => {
+
+  const ace_editor = ace.edit(document.querySelector('.ace_editor'))
+  const submission = ace_editor.getValue()
+  // const key = submission.split(' ')[3]
+  for (const key in solutions) {
+
+    if (submission.includes('box.' + key + ' ')) {
+      ace_editor.gotoPageDown()
+      // ace_editor.destroy()
+      ace_editor.insert(`;box.${key}=${solutions[key]}`)
+      get_submit_button().click()
+      setTimeout(() => {
+        get_submit_button().click()
+        setTimeout(() => {
+          solve()
+        }, 400)
+      }, 900)
+      return
+    }
+  }
+}
+solve()
+
+
+
+// const targetNode = document.body;
+// const config = { childList: true, subtree: true };
+
+// const callback = function (mutationsList, observer) {
+//   for (let mutation of mutationsList) {
+//     if (mutation.type === 'childList') {
+//       solve()
+//       console.log("something has changed")
+//     }
+//   }
+// };
+
+// const observer = new MutationObserver(callback);
+// observer.observe(targetNode, config);

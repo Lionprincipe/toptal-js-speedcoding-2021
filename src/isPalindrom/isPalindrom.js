@@ -5,7 +5,6 @@ export function isPalindrome(x) {
 
   if (typeof x === "string" && x === "") return true
 
-
   const chars = x.toLowerCase().match(/[a-zA-Z]+/g).join("")
   return chars.split("").reverse().join("") === chars
 
